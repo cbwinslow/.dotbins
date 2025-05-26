@@ -1,22 +1,22 @@
 {
   "version": 2,
   "atuin/linux/amd64": {
-    "tag": "18.6.0",
-    "updated_at": "2025-05-08T09:48:12.197716",
-    "sha256": "6c24fbff42b712831110eff053138b37e7b6c81ed9b0d0e346884d3aab990525",
-    "url": "https://github.com/atuinsh/atuin/releases/download/18.6.0/atuin-x86_64-unknown-linux-musl.tar.gz"
+    "tag": "v18.6.1",
+    "updated_at": "2025-05-26T04:49:23.298814",
+    "sha256": "c781d5eeb4c407069fbc402ec3ad11a755f5a916f13220ac4612dccda42399ad",
+    "url": "https://github.com/atuinsh/atuin/releases/download/v18.6.1/atuin-x86_64-unknown-linux-musl.tar.gz"
   },
   "atuin/linux/arm64": {
-    "tag": "18.6.0",
-    "updated_at": "2025-05-08T09:48:12.275176",
-    "sha256": "1c6edf638ace7ffe77e1788810af0a6ea98f68d4bcbfac6bb955bd5ae86ae1bf",
-    "url": "https://github.com/atuinsh/atuin/releases/download/18.6.0/atuin-aarch64-unknown-linux-musl.tar.gz"
+    "tag": "v18.6.1",
+    "updated_at": "2025-05-26T04:49:23.391623",
+    "sha256": "42b7d9bde8bf2d04832c1b2ceea1d3d89ecd762a40623d92a7197d2287fff82b",
+    "url": "https://github.com/atuinsh/atuin/releases/download/v18.6.1/atuin-aarch64-unknown-linux-musl.tar.gz"
   },
   "atuin/macos/arm64": {
-    "tag": "18.6.0",
-    "updated_at": "2025-05-08T09:48:12.343719",
-    "sha256": "65f2884afafb873ceb1792d076d2f2c837e981ae83f3bbcbe0ec2f95ecdc8d9f",
-    "url": "https://github.com/atuinsh/atuin/releases/download/18.6.0/atuin-aarch64-apple-darwin.tar.gz"
+    "tag": "v18.6.1",
+    "updated_at": "2025-05-26T04:49:23.486997",
+    "sha256": "649f1ea17a11d150c18c52341e7dbe18fdec551e38ca824b0cf6e9a7553dbf1d",
+    "url": "https://github.com/atuinsh/atuin/releases/download/v18.6.1/atuin-aarch64-apple-darwin.tar.gz"
   },
   "bat/linux/amd64": {
     "tag": "v0.25.0",
@@ -193,40 +193,40 @@
     "url": "https://github.com/sharkdp/hyperfine/releases/download/v1.19.0/hyperfine-v1.19.0-aarch64-apple-darwin.tar.gz"
   },
   "keychain/linux/amd64": {
-    "tag": "2.9.2",
-    "updated_at": "2025-05-06T14:06:36.913886",
-    "sha256": "d38eb3129a65355305656a180d6f45ff7fa1e8a7e48e24aaa2a6d1b39b473407",
-    "url": "https://github.com/funtoo/keychain/releases/download/2.9.2/keychain"
+    "tag": "2.9.5",
+    "updated_at": "2025-05-26T04:49:23.488623",
+    "sha256": "52129c8bb8eabbb997315cb6289f389b87c01f21e891bfca6dc1d51813bbd643",
+    "url": "https://github.com/funtoo/keychain/releases/download/2.9.5/keychain"
   },
   "keychain/linux/arm64": {
-    "tag": "2.9.2",
-    "updated_at": "2025-05-06T14:06:36.917576",
-    "sha256": "d38eb3129a65355305656a180d6f45ff7fa1e8a7e48e24aaa2a6d1b39b473407",
-    "url": "https://github.com/funtoo/keychain/releases/download/2.9.2/keychain"
+    "tag": "2.9.5",
+    "updated_at": "2025-05-26T04:49:23.489819",
+    "sha256": "52129c8bb8eabbb997315cb6289f389b87c01f21e891bfca6dc1d51813bbd643",
+    "url": "https://github.com/funtoo/keychain/releases/download/2.9.5/keychain"
   },
   "keychain/macos/arm64": {
-    "tag": "2.9.2",
-    "updated_at": "2025-05-06T14:06:36.920536",
-    "sha256": "d38eb3129a65355305656a180d6f45ff7fa1e8a7e48e24aaa2a6d1b39b473407",
-    "url": "https://github.com/funtoo/keychain/releases/download/2.9.2/keychain"
+    "tag": "2.9.5",
+    "updated_at": "2025-05-26T04:49:23.491043",
+    "sha256": "52129c8bb8eabbb997315cb6289f389b87c01f21e891bfca6dc1d51813bbd643",
+    "url": "https://github.com/funtoo/keychain/releases/download/2.9.5/keychain"
   },
   "lazygit/linux/amd64": {
-    "tag": "v0.50.0",
-    "updated_at": "2025-05-05T08:26:16.537393",
-    "sha256": "bb2bc0ac8b1e2678c650c5aa8a6fa1595e46f8825ce7e6a3833ca95768179881",
-    "url": "https://github.com/jesseduffield/lazygit/releases/download/v0.50.0/lazygit_0.50.0_Linux_x86_64.tar.gz"
+    "tag": "v0.51.1",
+    "updated_at": "2025-05-26T04:49:23.545489",
+    "sha256": "97513712342d105113bb22cd360987613306cf359a944f929d1872dc9cb4ccfb",
+    "url": "https://github.com/jesseduffield/lazygit/releases/download/v0.51.1/lazygit_0.51.1_Linux_x86_64.tar.gz"
   },
   "lazygit/linux/arm64": {
-    "tag": "v0.50.0",
-    "updated_at": "2025-05-05T08:26:16.580283",
-    "sha256": "3f5728d99263ae2055ce7f767d60e75fef4faf14b5a5511281108d91b1dff624",
-    "url": "https://github.com/jesseduffield/lazygit/releases/download/v0.50.0/lazygit_0.50.0_Linux_arm64.tar.gz"
+    "tag": "v0.51.1",
+    "updated_at": "2025-05-26T04:49:23.595454",
+    "sha256": "7bc02920a09215ed88467870d8757dbbf448da967c8fc97d5523071e3ec15133",
+    "url": "https://github.com/jesseduffield/lazygit/releases/download/v0.51.1/lazygit_0.51.1_Linux_arm64.tar.gz"
   },
   "lazygit/macos/arm64": {
-    "tag": "v0.50.0",
-    "updated_at": "2025-05-05T08:26:16.626005",
-    "sha256": "a36c2432ab43ca0e65852bb1c620c58e7b4775a30711624c5b23fca89763406e",
-    "url": "https://github.com/jesseduffield/lazygit/releases/download/v0.50.0/lazygit_0.50.0_Darwin_arm64.tar.gz"
+    "tag": "v0.51.1",
+    "updated_at": "2025-05-26T04:49:23.650745",
+    "sha256": "543266ea9d3611c9280302c538f569a792a9edaf83b11f3819324443b45de994",
+    "url": "https://github.com/jesseduffield/lazygit/releases/download/v0.51.1/lazygit_0.51.1_Darwin_arm64.tar.gz"
   },
   "micromamba/linux/amd64": {
     "tag": "2.1.1-0",
@@ -283,22 +283,22 @@
     "url": "https://github.com/starship/starship/releases/download/v1.23.0/starship-aarch64-apple-darwin.tar.gz"
   },
   "uv/linux/amd64": {
-    "tag": "0.7.3",
-    "updated_at": "2025-05-08T09:48:12.441799",
-    "sha256": "325143825b88e7b0dadd1a8e8d3cbe4791d3cbbb9e2244350d917803fec8b3d1",
-    "url": "https://github.com/astral-sh/uv/releases/download/0.7.3/uv-x86_64-unknown-linux-musl.tar.gz"
+    "tag": "0.7.8",
+    "updated_at": "2025-05-26T04:49:23.783875",
+    "sha256": "8a707e45e0d1a8bdbc5bd1af0ae7d19ffab55f3722c5e73471039561900e3d48",
+    "url": "https://github.com/astral-sh/uv/releases/download/0.7.8/uv-x86_64-unknown-linux-musl.tar.gz"
   },
   "uv/linux/arm64": {
-    "tag": "0.7.3",
-    "updated_at": "2025-05-08T09:48:12.530824",
-    "sha256": "a3f01c3c993b57fa8d13855c5ba60e3847bda4f8e795a52d52879e242e886604",
-    "url": "https://github.com/astral-sh/uv/releases/download/0.7.3/uv-aarch64-unknown-linux-musl.tar.gz"
+    "tag": "0.7.8",
+    "updated_at": "2025-05-26T04:49:23.888535",
+    "sha256": "4d18efb46f93fa942dc4c212dea3b6b07e3db62fe57d0c3d08de6bf5d9f9bb51",
+    "url": "https://github.com/astral-sh/uv/releases/download/0.7.8/uv-aarch64-unknown-linux-musl.tar.gz"
   },
   "uv/macos/arm64": {
-    "tag": "0.7.3",
-    "updated_at": "2025-05-08T09:48:12.617350",
-    "sha256": "162b328fc63e0075d4267688201de91356e1c1b81db50419fa4466cfe2dfdebc",
-    "url": "https://github.com/astral-sh/uv/releases/download/0.7.3/uv-aarch64-apple-darwin.tar.gz"
+    "tag": "0.7.8",
+    "updated_at": "2025-05-26T04:49:23.992860",
+    "sha256": "ad6b3825ba277de70b9d0a37055f7d828f3f37416aee1cde65000f330efd4587",
+    "url": "https://github.com/astral-sh/uv/releases/download/0.7.8/uv-aarch64-apple-darwin.tar.gz"
   },
   "yazi/linux/amd64": {
     "tag": "v25.4.8",

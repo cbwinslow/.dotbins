@@ -13,9 +13,10 @@ versinfo() {
 	qprint
 }
 
+umask 0077
 NEWLINE="
 "
-version=2.9.2
+version=2.9.5
 PATH="${PATH}${PATH:+:}/usr/bin:/bin:/sbin:/usr/sbin:/usr/ucb"
 unset pidfile_out
 unset myaction
@@ -62,6 +63,7 @@ CYANN="[36m"
 GREEN="[32;01m"
 RED="[31;01m"
 PURP="[35;01m"
+YEL="[33;01m"
 OFF="[0m"
 
 # GNU awk and sed have regex issues in a multibyte environment.  If any locale
@@ -77,21 +79,26 @@ fi
 
 qprint() {
 	# shellcheck disable=SC2048,SC2086
-	$quietopt || echo $* >&2
+	$quietopt || echo "$@" >&2; return 0
 }
 
-mesg() {
+mesg() { # general information; suppressed with --quiet
 	qprint " ${GREEN}*${OFF} $*"
 }
 
-warn() {
+warn() { # important warning; not suppressed with --quiet
 	# shellcheck disable=SC2048,SC2086
 	echo " ${RED}* Warning${OFF}: "$* >&2
 }
 
+note() { # important notice; suppressed with --quiet
+	# shellcheck disable=SC2048,SC2086
+	qprint " ${YEL}* Note${OFF}: "$* >&2
+}
+
 debug() {
 	# shellcheck disable=SC2048,SC2086
-	$debugopt && echo "${CYAN}debug>" $*"${OFF}" >&2
+	$debugopt && echo " ${CYAN}debug>" $*"${OFF}" >&2; return 0
 }
 
 error() {
@@ -119,9 +126,15 @@ SYNOPSIS
 
 OPTIONS
     ${GREEN}--absolute${OFF}
-        Any arguments to "--dir" are interpreted to be absolute. The default
-        behavior is to append "/.keychain" to the argument for backwards
-        compatibility.
+        This option can be used with the ${GREEN}--dir${OFF} option, if you would like to
+        specify a non-default directory to store pidfiles (defaults to
+        "~/.keychain"). When this option is used, the script does not
+        automatically append "/.keychain" to the path, allowing you to use
+        any arbitrary directory name for the storing of pidfiles. Please
+        note that Keychain 2.9.3 adds some extra security checks related to
+        directory and file permissions ${GREEN}--${OFF} you must have exclusive ownership
+        of any directory that keychain uses to store pidfiles, or keychain
+        will abort.
 
     ${GREEN}--clear${OFF}
         When specified, this option adds an initial step prior to adding any
@@ -154,7 +167,12 @@ OPTIONS
         connection, and ${GREEN}--ssh-allow-forwarded${OFF} was not supplied.
 
     ${GREEN}--dir${OFF} ${CYAN}dirname${OFF}
-        Keychain will use dirname rather than \$HOME/.keychain
+        This option allows you to use another directory besides
+        "\$HOME/.keychain". for the storing of pidfiles. Please note that
+        Keychain 2.9.3 adds some extra security checks related to directory
+        and file permissions ${GREEN}--${OFF} you must have exclusive ownership of any
+        directory that keychain uses to store pidfiles, or the script will
+        abort. Also see the ${GREEN}--absolute${OFF} option.
 
     ${GREEN}--env${OFF} ${CYAN}filename${OFF}
         After parsing options, keychain will load additional environment
@@ -360,6 +378,8 @@ OPTIONS
 EOHELP
 }
 
+me=$(id -un) || die "Who are you?  id -un doesn't know..."
+
 # synopsis: testssh
 # Figure out which ssh is in use, set the global boolean $openssh and $sunssh
 testssh() {
@@ -389,10 +409,14 @@ verifykeydir() {
 		die "${keydir} is a file (it should be a directory)"
 	# Solaris 9 doesn't have -e; using -d....
 	elif [ ! -d "${keydir}" ]; then
-		( umask 0077 && mkdir "${keydir}"; ) || die "can't create ${keydir}"
+		mkdir "${keydir}" || die "can't create ${keydir}"
 	fi
-	# Can we write to the keydir? - The ( ) subshell is intentional! We don't want to change the umask globally!
-	if ! ( umask 0177 && :> "$pidf.foo" ); then
+	# shellcheck disable=SC2012 # The "stat" command is not in POSIX, but "ls" output is. So for compliance, do this:
+	dir_owner="$(ls -ld "${keydir}" | awk '{print $3}')"
+	[ "$dir_owner" != "$me" ] && warn "${keydir} is owned by ${dir_owner}, not ${me}. Please fix."
+	# shellcheck disable=SC2012 # POSIX defines the first 9 chars of ls -l:
+	[ "$(ls -ld "${keydir}" | cut -c5-10)" != "------" ] && warn "Keychain dir has lax permissions. Use ${CYAN}chmod -R go-rwx '${keydir}'${OFF} to fix."
+	if ! :> "$pidf.foo"; then
 		die "can't write inside $pidf"
 	else
 		rm -f "$pidf.foo"
@@ -551,8 +575,11 @@ catpidf_shell() {
 		*csh)		 cp_pidf="$cshpidf" ;;
 		*)			 cp_pidf="$pidf" ;;
 	esac
-	[ ! -f "$cp_pidf" ] && debug "pidfile doesn't exist" && return 1
-	[ -f "$cp_pidf" ] && cat "${cp_pidf}" && echo && return 0
+	if [ ! -f "$cp_pidf" ]; then
+		debug "pidfile doesn't exist"; return 1
+	else
+		cat "${cp_pidf}"; echo; return 0
+	fi
 }
 
 startagent_gpg() {
@@ -576,14 +603,10 @@ startagent_gpg() {
 }
 
 ssh_envcheck() {
-	envcheck_echo=true # if false, don't print out any warnings as we are doing a pre-check...
-	[ "$2" = "quiet" ] && envcheck_echo=false
-	
 	# Initial short-circuits for known abort cases:
-	
 	[ -z "$SSH_AUTH_SOCK" ] && return 1
 	if [ ! -S "$SSH_AUTH_SOCK" ]; then
-		$envcheck_echo && warn "SSH_AUTH_SOCK in $1 is invalid; ignoring it"
+		debug "SSH_AUTH_SOCK in $1 is invalid; ignoring it"
 		unset SSH_AUTH_SOCK && return 1
 	fi
 
@@ -602,7 +625,8 @@ ssh_envcheck() {
 		if gpg_socket="$(echo "GETINFO ssh_socket_name" | gpg-connect-agent --no-autostart 2>/dev/null | head -n1 | sed -n 's/^D //;1p' )"; then
 			if [ "$gpg_socket" = "$SSH_AUTH_SOCK" ]; then
 				if $ssh_allow_gpg; then
-					mesg "Using ssh-agent ($1): ${CYANN}$gpg_socket${OFF} (GnuPG)" && return 0
+					$quickopt || mesg "Using ssh-agent ($1): ${CYANN}$gpg_socket${OFF} (GnuPG)"
+					return 0
 				else
 					unset SSH_AUTH_SOCK && debug "Ignoring SSH_AUTH_SOCK -- this is the GnuPG-supplied socket" && return 1
 				fi
@@ -611,14 +635,15 @@ ssh_envcheck() {
 
 		if $ssh_allow_forwarded; then
 			SSH_AGENT_PID="forwarded"
-			mesg "Using ${GREEN}forwarded${OFF} ssh-agent: ${GREEN}$SSH_AUTH_SOCK${OFF}" && return 0
+			$quickopt || mesg "Using ${GREEN}forwarded${OFF} ssh-agent: ${GREEN}$SSH_AUTH_SOCK${OFF}"
+			return 0
 		else
 			unset SSH_AUTH_SOCK && debug "Ignoring SSH_AUTH_SOCK -- this is a forwarded socket" && return 1
 		fi
 	else
-
 		# We have valid SSH_AGENT_PID, so we accept the socket too:
-		mesg "Existing ssh-agent ($1): ${CYANN}$SSH_AGENT_PID${OFF}" && return 0
+		$quickopt || mesg "Existing ssh-agent ($1): ${CYANN}$SSH_AGENT_PID${OFF}"
+		return 0
 	fi
 }
 
@@ -629,19 +654,23 @@ ssh_envcheck() {
 
 startagent_ssh() {
 	if $quickopt; then
-		# shellcheck disable=SC2030 # This is fine as sshavail will be called again if needed:
-		if ( unset SSH_AGENT_PID SSH_AUTH_SOCK && eval "$(catpidf_shell sh)" && ssh_envcheck pidfile quiet ) && ( ssh_l > /dev/null || { [ $? = 1 ] && [ -z "$mykeys" ]; }; ); then
-			mesg "Found existing ssh-agent (quick)"
+		if ( unset SSH_AGENT_PID SSH_AUTH_SOCK && eval "$(catpidf_shell sh)" && ssh_envcheck quick && ssh_l > /dev/null ); then
+			mesg "Found existing populated ssh-agent (quick)"
 			return 0
 		else
-			warn "Quick start unsuccessful -- doing regular start..."
+			if ( eval "$(catpidf_shell sh)" && ssh_envcheck quick ); then
+				note "Quick start unsuccessful -- no keys loaded..."
+			else
+				note "Quick start unsuccessful -- no agent found..."
+			fi
+			quickopt=false
 		fi
 	fi
 	takelock || die
 	# See if our pidfile is valid without wiping env:
-	if ( unset SSH_AGENT_PID SSH_AUTH_SOCK && eval "$(catpidf_shell sh)" && ssh_envcheck pidfile quiet ); then
+	if ( unset SSH_AGENT_PID SSH_AUTH_SOCK && eval "$(catpidf_shell sh)" && ssh_envcheck pidfile ); then
 		# Our pidfile is valid! :) We can simply use it:
-		unset SSH_AGENT_PID SSH_AUTH_SOCK && eval "$(catpidf_shell sh)"
+		debug "pidfile is valid" && unset SSH_AGENT_PID SSH_AUTH_SOCK && eval "$(catpidf_shell sh)"
 	elif $allow_inherited && ssh_envcheck env; then
 		# If our env is OK, then let's grab it for our pidfile, as long as we don't have a forwarded ssh connection:
 		if [ "$SSH_AGENT_PID" != forwarded ]; then
@@ -668,6 +697,7 @@ SSH_AGENT_PID=$SSH_AGENT_PID; export SSH_AGENT_PID"
 write_pidfile() {
 	if [ -n "$pidfile_out" ]; then
 		pidfile_out=$(echo "$pidfile_out" | grep -v 'Agent pid')
+		rm -f "$pidf" "$cshpidf" "$fishpidf" # Remove first, so we can recreate with our umask
 		case "$pidfile_out" in
 			setenv*)
 				echo "$pidfile_out" >"$cshpidf"
@@ -758,7 +788,6 @@ ssh_l() {
 				;;
 		esac
 		return $sl_retval
-
 	else
 		# Error codes:
 		#	0  success - however might say "The authorization agent has no keys."
@@ -798,7 +827,7 @@ ssh_f() {
 			fi
 			lsf_filename=$(echo "$sf_filename" | sed 's/\.[^\.]*$//').pub
 			if [ ! -f "$lsf_filename" ]; then
-				warn "Cannot find separate public key for $1."
+				note "Cannot find separate public key for $1."
 				lsf_filename="$sf_filename"
 			fi
 		fi
@@ -985,7 +1014,6 @@ setaction() {
 
 wantagent() {
 	[ "$1" = "gpg" ] && [ -n "$gpgkeys" ] && return 0
-	[ "$1" = "ssh" ] && return 0
 	return 1
 }
 
@@ -994,7 +1022,7 @@ gpg_wipe() {
 	if [ "$out" = "OK" ]; then
 		mesg "gpg-agent: All identities removed."
 	else
-		mesg "gpg-agent: Could not remove identities ($out)"
+		mesg "gpg-agent: Could not remove identities; possibly not running. (output: $out)"
 	fi
 }
 
@@ -1125,6 +1153,15 @@ pidf="${keydir}/${hostopt}-sh"
 cshpidf="${keydir}/${hostopt}-csh"
 fishpidf="${keydir}/${hostopt}-fish"
 lockf="${keydir}/${hostopt}-lockf"
+for keyf in "$pidf" "$cshpidf" "$fishpidf"; do
+	if [ -f "$keyf" ]; then
+		# shellcheck disable=SC2012 # POSIX defines the first 9 chars of ls -l:
+		go_modes="$(ls -ld "${keyf}" | cut -c5-10 )"
+		[ "$go_modes" != "------" ] && warn "Some pidfiles have lax permissions. Use ${CYAN}chmod -R go-rwx '${keydir}'${OFF} to fix."
+		# shellcheck disable=SC2012
+		keyf_owner="$(ls -ld "${keyf}" | awk '{print $3}')" && [ "$keyf_owner" != "$me" ] && warn "${keyf} is owned by ${keyf_owner}, not ${me}. Please fix."
+	fi
+done
 
 # Read the env snippet (especially for things like PATH, but could modify basically anything)
 if [ -z "$envf" ]; then
@@ -1149,7 +1186,7 @@ $color || unset BLUE CYAN CYANN GREEN PURP OFF RED
 [ "$myaction" = list-fp ] && eval "$(catpidf_shell sh)" && exec ssh-add -L
 
 qprint #initial newline
-mesg "${PURP}keychain ${OFF}${CYANN}${version}${OFF} ~ ${GREEN}http://www.funtoo.org/Funtoo:Keychain${OFF}"
+mesg "${PURP}keychain ${OFF}${CYANN}${version}${OFF} ~ ${GREEN}https://www.funtoo.org/Funtoo:Keychain${OFF}"
 
 [ "$myaction" = version ] && { versinfo; exit 0; }
 [ "$myaction" = help ] && { versinfo; helpinfo; exit 0; }
@@ -1167,7 +1204,6 @@ fi
 
 testssh # sets $openssh, $sunssh and tweaks $ssh_spawn_gpg
 verifykeydir # sets up $keydir
-me=$(id -un) || die "Who are you?  id -un doesn't know..."
 
 # --stop: kill the existing ssh-agent(s) (not gpg-agent) and quit
 [ "$myaction" = stop ] && stop_ssh_agents
@@ -1198,7 +1234,11 @@ elif [ "$myaction" = all_wipe ]; then
 	ssh_wipe; gpg_wipe; qprint; exit 0
 elif [ "$myaction" = query ]; then
 	# --query displays current settings, but does not start an agent:
-	catpidf_shell sh | cut -d\; -f1 && exit 0
+	if catpidf_shell sh > /dev/null; then
+		catpidf_shell sh | cut -d\; -f1 && exit 0
+	else
+		die "Can't query. Does pidfile exist?"
+	fi
 elif [ "$myaction" = ssh_rm ]; then
 	if [ -n "$sshkeys" ]; then
 		die "No ssh keys specified to remove."
@@ -1212,13 +1252,8 @@ elif [ "$myaction" = ssh_rm ]; then
 	done
 	qprint; exit 0
 else
-	if ! wantagent ssh && ! wantagent gpg; then
-		die "No keys specified. Nothing to do."
-	fi
-	if wantagent ssh; then
-		# This will start gpg-agent as an ssh-agent if such functionality is enabled (default)
-		startagent_ssh || warn "Unable to start an ssh-agent (error code: $?)"
-	fi
+	# This will start gpg-agent as an ssh-agent if such functionality is enabled (default)
+	startagent_ssh || warn "Unable to start an ssh-agent (error code: $?)"
 	[ -n "$pidfile_out" ] && write_pidfile && eval "$pidfile_out" > /dev/null
 	if ! $gpg_started && wantagent gpg; then
 		# If we also want gpg, and it hasn't been started yet, start it also. We don't need to
@@ -1227,9 +1262,7 @@ else
 		startagent_gpg || warn "Unable to start gpg-agent (error code: $?)"
 	fi
 	if $clearopt; then
-		if wantagent ssh; then
-			ssh_wipe
-		fi
+		ssh_wipe
 		if wantagent gpg; then
 			gpg_wipe
 		fi
@@ -1241,11 +1274,9 @@ if $evalopt; then
 	catpidf_shell "$SHELL"
 fi
 
-if $systemdopt; then
-	systemctl --user set-environment "$( catpidf_shell sh | cut -d\; -f1 )"
-fi
-
-# --noask: "don't ask for keys", so we're all done
+$systemdopt && systemctl --user set-environment "SSH_AUTH_SOCK=$SSH_AUTH_SOCK"
+$systemdopt && [ -n "$SSH_AGENT_PID" ] && systemctl --user set-environment "SSH_AGENT_PID=$SSH_AGENT_PID"
+# These options don't need to load keys, so terminate early:
 $noaskopt && { qprint; exit 0; }
 $quickopt && { qprint; exit 0; }
 
@@ -1305,9 +1336,7 @@ load_gpg_keys() {
 	done 
 }
 
-if wantagent ssh; then
-	load_ssh_keys || die "Unable to add keys"
-fi
+load_ssh_keys || die "Unable to add keys"
 
 if wantagent gpg; then
 	# shellcheck disable=SC2046
