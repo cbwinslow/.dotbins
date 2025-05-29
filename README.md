@@ -50,12 +50,12 @@ Learn more: [github.com/basnijholt/dotbins](https://github.com/basnijholt/dotbin
 | [rg](https://github.com/BurntSushi/ripgrep) | BurntSushi/ripgrep | 14.1.1 | Apr 01, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [starship](https://github.com/starship/starship) | starship/starship | 1.23.0 | Apr 28, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [uv](https://github.com/astral-sh/uv) | astral-sh/uv | 0.7.8 | May 26, 2025 | linux (amd64, arm64) • macos (arm64) |
-| [yazi](https://github.com/sxyazi/yazi) | sxyazi/yazi | 25.4.8 | Apr 16, 2025 | linux (amd64, arm64) • macos (arm64) |
+| [yazi](https://github.com/sxyazi/yazi) | sxyazi/yazi | 25.5.28 | May 29, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [zoxide](https://github.com/ajeetdsouza/zoxide) | ajeetdsouza/zoxide | 0.9.8 | May 27, 2025 | linux (amd64, arm64) • macos (arm64) |
 
 ## 📊 Tool Statistics
 
-<div align='center'><h3>📦 56 Tools | 💾 539.54 MB Total Size</h3></div>
+<div align='center'><h3>📦 56 Tools | 💾 540.98 MB Total Size</h3></div>
 
 | Tool | Total Size | Avg Size per Architecture |
 | :--- | :-------- | :------------------------ |
@@ -63,7 +63,7 @@ Learn more: [github.com/basnijholt/dotbins](https://github.com/basnijholt/dotbin
 | atuin | 99.28 MB | 33.09 MB |
 | lazygit | 60.72 MB | 20.24 MB |
 | micromamba | 48.06 MB | 16.02 MB |
-| yazi | 40.41 MB | 13.47 MB |
+| yazi | 41.84 MB | 13.95 MB |
 | git-lfs | 34.49 MB | 11.5 MB |
 | starship | 28.89 MB | 9.63 MB |
 | direnv | 22.61 MB | 7.54 MB |
@@ -231,6 +231,6 @@ tools:
 
 ## ℹ️ Additional Information
 
-* This README was automatically generated on May 27, 2025
+* This README was automatically generated on May 29, 2025
 * Current platform: **macos/arm64**
 * For more information on dotbins, visit https://github.com/basnijholt/dotbins
