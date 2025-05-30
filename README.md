@@ -39,7 +39,7 @@ Learn more: [github.com/basnijholt/dotbins](https://github.com/basnijholt/dotbin
 | [direnv](https://github.com/direnv/direnv) | direnv/direnv | 2.36.0 | Apr 16, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [duf](https://github.com/muesli/duf) | muesli/duf | 0.8.1 | Apr 16, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [dust](https://github.com/bootandy/dust) | bootandy/dust | 1.2.0 | Apr 16, 2025 | linux (amd64, arm64) • macos (arm64) |
-| [eza](https://github.com/eza-community/eza) | eza-community/eza | 0.21.3 | May 02, 2025 | linux (amd64, arm64) |
+| [eza](https://github.com/eza-community/eza) | eza-community/eza | 0.21.4 | May 30, 2025 | linux (amd64, arm64) |
 | [fd](https://github.com/sharkdp/fd) | sharkdp/fd | 10.2.0 | Apr 16, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [fzf](https://github.com/junegunn/fzf) | junegunn/fzf | 0.62.0 | May 05, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [git-lfs](https://github.com/git-lfs/git-lfs) | git-lfs/git-lfs | 3.6.1 | Apr 16, 2025 | linux (amd64, arm64) • macos (arm64) |
@@ -49,21 +49,21 @@ Learn more: [github.com/basnijholt/dotbins](https://github.com/basnijholt/dotbin
 | [micromamba](https://github.com/mamba-org/micromamba-releases) | mamba-org/micromamba-releases | 2.1.1-0 | May 06, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [rg](https://github.com/BurntSushi/ripgrep) | BurntSushi/ripgrep | 14.1.1 | Apr 01, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [starship](https://github.com/starship/starship) | starship/starship | 1.23.0 | Apr 28, 2025 | linux (amd64, arm64) • macos (arm64) |
-| [uv](https://github.com/astral-sh/uv) | astral-sh/uv | 0.7.8 | May 26, 2025 | linux (amd64, arm64) • macos (arm64) |
-| [yazi](https://github.com/sxyazi/yazi) | sxyazi/yazi | 25.5.28 | May 29, 2025 | linux (amd64, arm64) • macos (arm64) |
+| [uv](https://github.com/astral-sh/uv) | astral-sh/uv | 0.7.9 | May 30, 2025 | linux (amd64, arm64) • macos (arm64) |
+| [yazi](https://github.com/sxyazi/yazi) | sxyazi/yazi | 25.5.31 | May 30, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [zoxide](https://github.com/ajeetdsouza/zoxide) | ajeetdsouza/zoxide | 0.9.8 | May 27, 2025 | linux (amd64, arm64) • macos (arm64) |
 
 ## 📊 Tool Statistics
 
-<div align='center'><h3>📦 56 Tools | 💾 540.98 MB Total Size</h3></div>
+<div align='center'><h3>📦 56 Tools | 💾 540.84 MB Total Size</h3></div>
 
 | Tool | Total Size | Avg Size per Architecture |
 | :--- | :-------- | :------------------------ |
-| uv | 108.29 MB | 36.1 MB |
+| uv | 108.15 MB | 36.05 MB |
 | atuin | 99.28 MB | 33.09 MB |
 | lazygit | 60.72 MB | 20.24 MB |
 | micromamba | 48.06 MB | 16.02 MB |
-| yazi | 41.84 MB | 13.95 MB |
+| yazi | 41.85 MB | 13.95 MB |
 | git-lfs | 34.49 MB | 11.5 MB |
 | starship | 28.89 MB | 9.63 MB |
 | direnv | 22.61 MB | 7.54 MB |
@@ -231,6 +231,6 @@ tools:
 
 ## ℹ️ Additional Information
 
-* This README was automatically generated on May 29, 2025
+* This README was automatically generated on May 30, 2025
 * Current platform: **macos/arm64**
 * For more information on dotbins, visit https://github.com/basnijholt/dotbins
