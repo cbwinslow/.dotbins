@@ -45,21 +45,21 @@ Learn more: [github.com/basnijholt/dotbins](https://github.com/basnijholt/dotbin
 | [git-lfs](https://github.com/git-lfs/git-lfs) | git-lfs/git-lfs | 3.6.1 | Apr 16, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [hyperfine](https://github.com/sharkdp/hyperfine) | sharkdp/hyperfine | 1.19.0 | Apr 16, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [keychain](https://github.com/funtoo/keychain) | funtoo/keychain | 2.9.5 | May 26, 2025 | linux (amd64, arm64) • macos (arm64) |
-| [lazygit](https://github.com/jesseduffield/lazygit) | jesseduffield/lazygit | 0.51.1 | May 26, 2025 | linux (amd64, arm64) • macos (arm64) |
+| [lazygit](https://github.com/jesseduffield/lazygit) | jesseduffield/lazygit | 0.52.0 | Jun 09, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [micromamba](https://github.com/mamba-org/micromamba-releases) | mamba-org/micromamba-releases | 2.2.0-0 | Jun 05, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [rg](https://github.com/BurntSushi/ripgrep) | BurntSushi/ripgrep | 14.1.1 | Apr 01, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [starship](https://github.com/starship/starship) | starship/starship | 1.23.0 | Apr 28, 2025 | linux (amd64, arm64) • macos (arm64) |
-| [uv](https://github.com/astral-sh/uv) | astral-sh/uv | 0.7.11 | Jun 05, 2025 | linux (amd64, arm64) • macos (arm64) |
+| [uv](https://github.com/astral-sh/uv) | astral-sh/uv | 0.7.12 | Jun 09, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [yazi](https://github.com/sxyazi/yazi) | sxyazi/yazi | 25.5.31 | May 30, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [zoxide](https://github.com/ajeetdsouza/zoxide) | ajeetdsouza/zoxide | 0.9.8 | May 27, 2025 | linux (amd64, arm64) • macos (arm64) |
 
 ## 📊 Tool Statistics
 
-<div align='center'><h3>📦 56 Tools | 💾 543.09 MB Total Size</h3></div>
+<div align='center'><h3>📦 56 Tools | 💾 543.28 MB Total Size</h3></div>
 
 | Tool | Total Size | Avg Size per Architecture |
 | :--- | :-------- | :------------------------ |
-| uv | 110.04 MB | 36.68 MB |
+| uv | 110.24 MB | 36.75 MB |
 | atuin | 99.28 MB | 33.09 MB |
 | lazygit | 60.72 MB | 20.24 MB |
 | micromamba | 48.23 MB | 16.08 MB |
@@ -231,6 +231,6 @@ tools:
 
 ## ℹ️ Additional Information
 
-* This README was automatically generated on Jun 05, 2025
+* This README was automatically generated on Jun 09, 2025
 * Current platform: **macos/arm64**
 * For more information on dotbins, visit https://github.com/basnijholt/dotbins
