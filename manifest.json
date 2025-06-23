@@ -109,16 +109,16 @@
     "url": "https://github.com/bootandy/dust/releases/download/v1.2.1/dust-v1.2.1-x86_64-apple-darwin.tar.gz"
   },
   "eza/linux/amd64": {
-    "tag": "v0.21.4",
-    "updated_at": "2025-05-30T14:51:33.642631",
-    "sha256": "82e1dde17d007c4903e88e9ee6e9dbd81f243616d547c71fe55cd3b0fa8739b0",
-    "url": "https://github.com/eza-community/eza/releases/download/v0.21.4/eza_x86_64-unknown-linux-musl.tar.gz"
+    "tag": "v0.21.5",
+    "updated_at": "2025-06-23T10:48:38.222665",
+    "sha256": "db2a8704a1c0cc9c515fdce435e23f9115a338ca5fd9fe3d3a65f3eadd11ea0c",
+    "url": "https://github.com/eza-community/eza/releases/download/v0.21.5/eza_x86_64-unknown-linux-musl.tar.gz"
   },
   "eza/linux/arm64": {
-    "tag": "v0.21.4",
-    "updated_at": "2025-05-30T14:51:33.655704",
-    "sha256": "df458f76662b5aa1e87fcc0d4ff5eb1063905127acd41e2aee0e20fc187394da",
-    "url": "https://github.com/eza-community/eza/releases/download/v0.21.4/eza_aarch64-unknown-linux-gnu.tar.gz"
+    "tag": "v0.21.5",
+    "updated_at": "2025-06-23T10:48:38.235964",
+    "sha256": "57ddbdc8641af5f36a68fe8647d3d1611a8556c101c3dbd3ee0ad16bc2df96be",
+    "url": "https://github.com/eza-community/eza/releases/download/v0.21.5/eza_aarch64-unknown-linux-gnu.tar.gz"
   },
   "fd/linux/amd64": {
     "tag": "v10.2.0",

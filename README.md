@@ -39,7 +39,7 @@ Learn more: [github.com/basnijholt/dotbins](https://github.com/basnijholt/dotbin
 | [direnv](https://github.com/direnv/direnv) | direnv/direnv | 2.36.0 | Apr 16, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [duf](https://github.com/muesli/duf) | muesli/duf | 0.8.1 | Apr 16, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [dust](https://github.com/bootandy/dust) | bootandy/dust | 1.2.1 | Jun 05, 2025 | linux (amd64, arm64) • macos (arm64) |
-| [eza](https://github.com/eza-community/eza) | eza-community/eza | 0.21.4 | May 30, 2025 | linux (amd64, arm64) |
+| [eza](https://github.com/eza-community/eza) | eza-community/eza | 0.21.5 | Jun 23, 2025 | linux (amd64, arm64) |
 | [fd](https://github.com/sharkdp/fd) | sharkdp/fd | 10.2.0 | Apr 16, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [fzf](https://github.com/junegunn/fzf) | junegunn/fzf | 0.62.0 | May 05, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [git-lfs](https://github.com/git-lfs/git-lfs) | git-lfs/git-lfs | 3.6.1 | Apr 16, 2025 | linux (amd64, arm64) • macos (arm64) |
@@ -55,7 +55,7 @@ Learn more: [github.com/basnijholt/dotbins](https://github.com/basnijholt/dotbin
 
 ## 📊 Tool Statistics
 
-<div align='center'><h3>📦 56 Tools | 💾 543.43 MB Total Size</h3></div>
+<div align='center'><h3>📦 56 Tools | 💾 543.44 MB Total Size</h3></div>
 
 | Tool | Total Size | Avg Size per Architecture |
 | :--- | :-------- | :------------------------ |
@@ -74,7 +74,7 @@ Learn more: [github.com/basnijholt/dotbins](https://github.com/basnijholt/dotbin
 | fd | 9.6 MB | 3.2 MB |
 | dust | 8.1 MB | 2.7 MB |
 | duf | 6.55 MB | 2.18 MB |
-| eza | 4.22 MB | 2.11 MB |
+| eza | 4.23 MB | 2.12 MB |
 | hyperfine | 3.6 MB | 1.2 MB |
 | zoxide | 3.12 MB | 1.04 MB |
 | keychain | 138.87 KB | 46.29 KB |
@@ -231,6 +231,6 @@ tools:
 
 ## ℹ️ Additional Information
 
-* This README was automatically generated on Jun 18, 2025
+* This README was automatically generated on Jun 23, 2025
 * Current platform: **macos/arm64**
 * For more information on dotbins, visit https://github.com/basnijholt/dotbins
