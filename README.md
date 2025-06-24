@@ -49,17 +49,17 @@ Learn more: [github.com/basnijholt/dotbins](https://github.com/basnijholt/dotbin
 | [micromamba](https://github.com/mamba-org/micromamba-releases) | mamba-org/micromamba-releases | 2.3.0-1 | Jun 18, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [rg](https://github.com/BurntSushi/ripgrep) | BurntSushi/ripgrep | 14.1.1 | Apr 01, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [starship](https://github.com/starship/starship) | starship/starship | 1.23.0 | Apr 28, 2025 | linux (amd64, arm64) • macos (arm64) |
-| [uv](https://github.com/astral-sh/uv) | astral-sh/uv | 0.7.13 | Jun 18, 2025 | linux (amd64, arm64) • macos (arm64) |
+| [uv](https://github.com/astral-sh/uv) | astral-sh/uv | 0.7.14 | Jun 24, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [yazi](https://github.com/sxyazi/yazi) | sxyazi/yazi | 25.5.31 | May 30, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [zoxide](https://github.com/ajeetdsouza/zoxide) | ajeetdsouza/zoxide | 0.9.8 | May 27, 2025 | linux (amd64, arm64) • macos (arm64) |
 
 ## 📊 Tool Statistics
 
-<div align='center'><h3>📦 56 Tools | 💾 543.44 MB Total Size</h3></div>
+<div align='center'><h3>📦 56 Tools | 💾 544.63 MB Total Size</h3></div>
 
 | Tool | Total Size | Avg Size per Architecture |
 | :--- | :-------- | :------------------------ |
-| uv | 110.33 MB | 36.78 MB |
+| uv | 111.52 MB | 37.17 MB |
 | atuin | 99.28 MB | 33.09 MB |
 | lazygit | 60.72 MB | 20.24 MB |
 | micromamba | 48.29 MB | 16.1 MB |
@@ -231,6 +231,6 @@ tools:
 
 ## ℹ️ Additional Information
 
-* This README was automatically generated on Jun 23, 2025
+* This README was automatically generated on Jun 24, 2025
 * Current platform: **macos/arm64**
 * For more information on dotbins, visit https://github.com/basnijholt/dotbins
