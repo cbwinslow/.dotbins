@@ -36,43 +36,43 @@ Learn more: [github.com/basnijholt/dotbins](https://github.com/basnijholt/dotbin
 | [atuin](https://github.com/atuinsh/atuin) | atuinsh/atuin | 18.6.1 | May 26, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [bat](https://github.com/sharkdp/bat) | sharkdp/bat | 0.25.0 | Apr 16, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [delta](https://github.com/dandavison/delta) | dandavison/delta | 0.18.2 | Apr 01, 2025 | linux (amd64, arm64) • macos (arm64) |
-| [direnv](https://github.com/direnv/direnv) | direnv/direnv | 2.36.0 | Apr 16, 2025 | linux (amd64, arm64) • macos (arm64) |
+| [direnv](https://github.com/direnv/direnv) | direnv/direnv | 2.37.0 | Jul 06, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [duf](https://github.com/muesli/duf) | muesli/duf | 0.8.1 | Apr 16, 2025 | linux (amd64, arm64) • macos (arm64) |
-| [dust](https://github.com/bootandy/dust) | bootandy/dust | 1.2.1 | Jun 05, 2025 | linux (amd64, arm64) • macos (arm64) |
-| [eza](https://github.com/eza-community/eza) | eza-community/eza | 0.21.6 | Jun 27, 2025 | linux (amd64, arm64) |
+| [dust](https://github.com/bootandy/dust) | bootandy/dust | 1.2.2 | Jul 06, 2025 | linux (amd64, arm64) • macos (arm64) |
+| [eza](https://github.com/eza-community/eza) | eza-community/eza | 0.22.0 | Jul 06, 2025 | linux (amd64, arm64) |
 | [fd](https://github.com/sharkdp/fd) | sharkdp/fd | 10.2.0 | Apr 16, 2025 | linux (amd64, arm64) • macos (arm64) |
-| [fzf](https://github.com/junegunn/fzf) | junegunn/fzf | 0.63.0 | Jun 27, 2025 | linux (amd64, arm64) • macos (arm64) |
+| [fzf](https://github.com/junegunn/fzf) | junegunn/fzf | 0.64.0 | Jul 06, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [git-lfs](https://github.com/git-lfs/git-lfs) | git-lfs/git-lfs | 3.7.0 | Jun 27, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [hyperfine](https://github.com/sharkdp/hyperfine) | sharkdp/hyperfine | 1.19.0 | Apr 16, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [keychain](https://github.com/funtoo/keychain) | funtoo/keychain | 2.9.5 | May 26, 2025 | linux (amd64, arm64) • macos (arm64) |
-| [lazygit](https://github.com/jesseduffield/lazygit) | jesseduffield/lazygit | 0.52.0 | Jun 09, 2025 | linux (amd64, arm64) • macos (arm64) |
+| [lazygit](https://github.com/jesseduffield/lazygit) | jesseduffield/lazygit | 0.53.0 | Jul 06, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [micromamba](https://github.com/mamba-org/micromamba-releases) | mamba-org/micromamba-releases | 2.3.0-1 | Jun 18, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [rg](https://github.com/BurntSushi/ripgrep) | BurntSushi/ripgrep | 14.1.1 | Apr 01, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [starship](https://github.com/starship/starship) | starship/starship | 1.23.0 | Apr 28, 2025 | linux (amd64, arm64) • macos (arm64) |
-| [uv](https://github.com/astral-sh/uv) | astral-sh/uv | 0.7.17 | Jul 01, 2025 | linux (amd64, arm64) • macos (arm64) |
+| [uv](https://github.com/astral-sh/uv) | astral-sh/uv | 0.7.19 | Jul 06, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [yazi](https://github.com/sxyazi/yazi) | sxyazi/yazi | 25.5.31 | May 30, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [zoxide](https://github.com/ajeetdsouza/zoxide) | ajeetdsouza/zoxide | 0.9.8 | May 27, 2025 | linux (amd64, arm64) • macos (arm64) |
 
 ## 📊 Tool Statistics
 
-<div align='center'><h3>📦 56 Tools | 💾 549.26 MB Total Size</h3></div>
+<div align='center'><h3>📦 56 Tools | 💾 549.68 MB Total Size</h3></div>
 
 | Tool | Total Size | Avg Size per Architecture |
 | :--- | :-------- | :------------------------ |
-| uv | 114.48 MB | 38.16 MB |
+| uv | 114.49 MB | 38.16 MB |
 | atuin | 99.28 MB | 33.09 MB |
-| lazygit | 60.72 MB | 20.24 MB |
+| lazygit | 61.13 MB | 20.38 MB |
 | micromamba | 48.29 MB | 16.1 MB |
 | yazi | 41.85 MB | 13.95 MB |
 | git-lfs | 35.96 MB | 11.99 MB |
 | starship | 28.89 MB | 9.63 MB |
-| direnv | 22.61 MB | 7.54 MB |
+| direnv | 22.62 MB | 7.54 MB |
 | delta | 18.64 MB | 6.21 MB |
 | bat | 16.22 MB | 5.41 MB |
 | rg | 15.46 MB | 5.15 MB |
 | fzf | 11.52 MB | 3.84 MB |
 | fd | 9.6 MB | 3.2 MB |
-| dust | 8.1 MB | 2.7 MB |
+| dust | 8.09 MB | 2.7 MB |
 | duf | 6.55 MB | 2.18 MB |
 | eza | 4.25 MB | 2.12 MB |
 | hyperfine | 3.6 MB | 1.2 MB |
@@ -231,6 +231,6 @@ tools:
 
 ## ℹ️ Additional Information
 
-* This README was automatically generated on Jul 01, 2025
+* This README was automatically generated on Jul 06, 2025
 * Current platform: **linux/amd64**
 * For more information on dotbins, visit https://github.com/basnijholt/dotbins
