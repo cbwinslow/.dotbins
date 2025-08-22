@@ -1,5 +1,8 @@
 tools_dir: ~/.dotbins
 
+# Enable Git LFS helper script generation
+generate_lfs_scripts: true
+
 platforms:
   linux:
     - amd64
@@ -32,7 +35,7 @@ tools:
     repo: eza-community/eza
     shell_code:
       bash,zsh: |
-        alias l="eza --long --all --git --icons=auto"
+        alias l="eza -lah --git --icons"
   fzf:
     repo: junegunn/fzf
     shell_code:
@@ -65,10 +68,6 @@ tools:
     shell_code:
       bash,zsh: |
         eval "$(atuin init __DOTBINS_SHELL__ --disable-up-arrow)"
-
-  keychain:
-    repo: funtoo/keychain
-    asset_patterns: keychain
 
   uv:
     repo: astral-sh/uv
