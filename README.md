@@ -1,6 +1,6 @@
 # 🛠️ dotbins Tool Collection
 
-[![dotbins](https://img.shields.io/badge/powered%20by-dotbins-blue.svg?style=flat-square)](https://github.com/basnijholt/dotbins) [![Version](https://img.shields.io/badge/version-1.2.0.post1+g429202a-green.svg?style=flat-square)](https://github.com/basnijholt/dotbins/releases)
+[![dotbins](https://img.shields.io/badge/powered%20by-dotbins-blue.svg?style=flat-square)](https://github.com/basnijholt/dotbins) [![Version](https://img.shields.io/badge/version-2.3.0-green.svg?style=flat-square)](https://github.com/basnijholt/dotbins/releases)
 
 This directory contains command-line tools automatically managed by [dotbins](https://github.com/basnijholt/dotbins).
 
@@ -54,12 +54,12 @@ Learn more: [github.com/basnijholt/dotbins](https://github.com/basnijholt/dotbin
 
 ## 📊 Tool Statistics
 
-<div align='center'><h3>📦 53 Tools | 💾 562.18 MB Total Size</h3></div>
+<div align='center'><h3>📦 53 Tools | 💾 524.79 MB Total Size</h3></div>
 
 | Tool | Total Size | Avg Size per Architecture |
 | :--- | :-------- | :------------------------ |
 | uv | 122.12 MB | 40.71 MB |
-| atuin | 103.47 MB | 34.49 MB |
+| atuin | 66.08 MB | 22.03 MB |
 | lazygit | 61.0 MB | 20.33 MB |
 | micromamba | 49.18 MB | 16.39 MB |
 | yazi | 41.85 MB | 13.95 MB |
@@ -151,6 +151,9 @@ This configuration defines which tools to manage, their sources, and platform co
 ```yaml
 tools_dir: ~/.dotbins
 
+# Enable Git LFS helper script generation
+generate_lfs_scripts: true
+
 platforms:
   linux:
     - amd64
@@ -221,8 +224,6 @@ tools:
     repo: astral-sh/uv
     binary_name: [uv, uvx]
     path_in_archive: [uv-*/uv, uv-*/uvx]
-
-generate_lfs_scripts: true
 ```
 
 ## ℹ️ Additional Information

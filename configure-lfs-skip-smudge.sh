@@ -21,19 +21,19 @@ echo "You only need to run this once after cloning the repository."
 echo ""
 
 # Create include patterns for current platform
-include_patterns="$CURRENT_PLATFORM/bin/**"
+include_patterns="$CURRENT_PLATFORM/**"
 
 # Create exclude patterns for all other platforms
 exclude_patterns=""
 
 if [[ "$OS" != "linux" ]] || [[ "$ARCH" != "amd64" ]]; then
-    exclude_patterns="${exclude_patterns} linux/amd64/bin/**"
+    exclude_patterns="${exclude_patterns} linux/amd64/**"
 fi
 if [[ "$OS" != "linux" ]] || [[ "$ARCH" != "arm64" ]]; then
-    exclude_patterns="${exclude_patterns} linux/arm64/bin/**"
+    exclude_patterns="${exclude_patterns} linux/arm64/**"
 fi
 if [[ "$OS" != "macos" ]] || [[ "$ARCH" != "arm64" ]]; then
-    exclude_patterns="${exclude_patterns} macos/arm64/bin/**"
+    exclude_patterns="${exclude_patterns} macos/arm64/**"
 fi
 
 echo "Setting up Git LFS skip-smudge for non-current platforms..."
@@ -52,15 +52,20 @@ echo ""
 echo "Files for your current platform ($CURRENT_PLATFORM) will be downloaded automatically."
 echo "Other platforms will be skipped to save bandwidth and disk space."
 echo ""
-echo "If you already have all platforms downloaded, you can remove other platforms with:"
-echo "  git lfs prune --verify-remote"
+echo "NOTE: If you already cloned with all platforms, you must manually remove them:"
+for pattern in $exclude_patterns; do
+    dir_pattern="${pattern%/**}"
+    echo "  rm -rf $dir_pattern"
+done
+echo ""
+echo "Then run: git lfs prune"
+echo "(This removes the LFS cache files to free up space in .git/lfs/)"
 echo ""
 echo "Useful commands:"
 echo "  Download current platform files: git lfs pull"
-echo "  Download a specific platform:    git lfs pull --include=\"linux/amd64/bin/**\""
+echo "  Download a specific platform:    git lfs pull --include=\"linux/amd64/**\""
 echo "  Download ALL platforms:          git lfs pull --include=\"*\""
 echo "  Check LFS file status:           git lfs ls-files"
-echo "  Remove unneeded LFS files:       git lfs prune --verify-remote"
 echo ""
 echo "To reset this configuration and download all platforms by default:"
 echo "  git config --local --unset-all lfs.fetchexclude"
