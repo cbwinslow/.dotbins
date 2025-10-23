@@ -33,43 +33,43 @@ Learn more: [github.com/basnijholt/dotbins](https://github.com/basnijholt/dotbin
 
 | Tool | Repository | Version | Updated | Platforms & Architectures |
 | :--- | :--------- | :------ | :------ | :------------------------ |
-| [atuin](https://github.com/atuinsh/atuin) | atuinsh/atuin | 18.8.0 | Oct 08, 2025 | linux (amd64, arm64) • macos (arm64) |
-| [bat](https://github.com/sharkdp/bat) | sharkdp/bat | 0.25.0 | Oct 08, 2025 | linux (amd64, arm64) • macos (arm64) |
+| [atuin](https://github.com/atuinsh/atuin) | atuinsh/atuin | 18.10.0 | Oct 23, 2025 | linux (amd64, arm64) • macos (arm64) |
+| [bat](https://github.com/sharkdp/bat) | sharkdp/bat | 0.26.0 | Oct 23, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [delta](https://github.com/dandavison/delta) | dandavison/delta | 0.18.2 | Aug 21, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [direnv](https://github.com/direnv/direnv) | direnv/direnv | 2.37.1 | Oct 08, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [duf](https://github.com/muesli/duf) | muesli/duf | 0.9.1 | Oct 08, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [dust](https://github.com/bootandy/dust) | bootandy/dust | 1.2.3 | Oct 08, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [eza](https://github.com/eza-community/eza) | eza-community/eza | 0.23.4 | Oct 08, 2025 | linux (amd64, arm64) |
 | [fd](https://github.com/sharkdp/fd) | sharkdp/fd | 10.3.0 | Oct 08, 2025 | linux (amd64, arm64) • macos (arm64) |
-| [fzf](https://github.com/junegunn/fzf) | junegunn/fzf | 0.65.2 | Oct 08, 2025 | linux (amd64, arm64) • macos (arm64) |
-| [git-lfs](https://github.com/git-lfs/git-lfs) | git-lfs/git-lfs | 3.7.0 | Oct 08, 2025 | linux (amd64, arm64) • macos (arm64) |
+| [fzf](https://github.com/junegunn/fzf) | junegunn/fzf | 0.66.0 | Oct 23, 2025 | linux (amd64, arm64) • macos (arm64) |
+| [git-lfs](https://github.com/git-lfs/git-lfs) | git-lfs/git-lfs | 3.7.1 | Oct 23, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [hyperfine](https://github.com/sharkdp/hyperfine) | sharkdp/hyperfine | 1.19.0 | Oct 08, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [lazygit](https://github.com/jesseduffield/lazygit) | jesseduffield/lazygit | 0.55.1 | Oct 08, 2025 | linux (amd64, arm64) • macos (arm64) |
-| [micromamba](https://github.com/mamba-org/micromamba-releases) | mamba-org/micromamba-releases | 2.3.2-0 | Oct 08, 2025 | linux (amd64, arm64) • macos (arm64) |
-| [rg](https://github.com/BurntSushi/ripgrep) | BurntSushi/ripgrep | 14.1.1 | Aug 21, 2025 | linux (amd64, arm64) • macos (arm64) |
+| [micromamba](https://github.com/mamba-org/micromamba-releases) | mamba-org/micromamba-releases | 2.3.3-0 | Oct 23, 2025 | linux (amd64, arm64) • macos (arm64) |
+| [rg](https://github.com/BurntSushi/ripgrep) | BurntSushi/ripgrep | 15.1.0 | Oct 23, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [starship](https://github.com/starship/starship) | starship/starship | 1.23.0 | Oct 08, 2025 | linux (amd64, arm64) • macos (arm64) |
-| [uv](https://github.com/astral-sh/uv) | astral-sh/uv | 0.9.0 | Oct 08, 2025 | linux (amd64, arm64) • macos (arm64) |
+| [uv](https://github.com/astral-sh/uv) | astral-sh/uv | 0.9.5 | Oct 23, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [yazi](https://github.com/sxyazi/yazi) | sxyazi/yazi | 25.5.31 | Oct 08, 2025 | linux (amd64, arm64) • macos (arm64) |
 | [zoxide](https://github.com/ajeetdsouza/zoxide) | ajeetdsouza/zoxide | 0.9.8 | Oct 08, 2025 | linux (amd64, arm64) • macos (arm64) |
 
 ## 📊 Tool Statistics
 
-<div align='center'><h3>📦 53 Tools | 💾 576.26 MB Total Size</h3></div>
+<div align='center'><h3>📦 53 Tools | 💾 577.32 MB Total Size</h3></div>
 
 | Tool | Total Size | Avg Size per Architecture |
 | :--- | :-------- | :------------------------ |
-| uv | 132.89 MB | 44.3 MB |
-| atuin | 103.47 MB | 34.49 MB |
+| uv | 133.74 MB | 44.58 MB |
+| atuin | 103.0 MB | 34.33 MB |
 | lazygit | 61.24 MB | 20.41 MB |
-| micromamba | 49.42 MB | 16.47 MB |
+| micromamba | 49.44 MB | 16.48 MB |
 | yazi | 41.85 MB | 13.95 MB |
-| git-lfs | 35.96 MB | 11.99 MB |
+| git-lfs | 35.92 MB | 11.97 MB |
 | starship | 28.89 MB | 9.63 MB |
 | direnv | 22.62 MB | 7.54 MB |
 | delta | 18.64 MB | 6.21 MB |
-| bat | 16.22 MB | 5.41 MB |
-| rg | 15.46 MB | 5.15 MB |
-| fzf | 11.56 MB | 3.85 MB |
+| bat | 17.96 MB | 5.99 MB |
+| rg | 13.39 MB | 4.46 MB |
+| fzf | 12.59 MB | 4.2 MB |
 | fd | 10.12 MB | 3.37 MB |
 | duf | 8.86 MB | 2.95 MB |
 | dust | 8.09 MB | 2.7 MB |
@@ -228,6 +228,6 @@ tools:
 
 ## ℹ️ Additional Information
 
-* This README was automatically generated on Oct 08, 2025
-* Current platform: **macos/arm64**
+* This README was automatically generated on Oct 23, 2025
+* Current platform: **linux/amd64**
 * For more information on dotbins, visit https://github.com/basnijholt/dotbins
