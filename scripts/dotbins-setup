@@ -1,0 +1,367 @@
+#!/usr/bin/env bash
+# dotbins-setup - Automated setup script for new machines
+# This script sets up dotbins from scratch on a new machine
+
+set -euo pipefail
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+BOLD='\033[1m'
+NC='\033[0m'
+
+# Configuration
+DOTBINS_REPO="${DOTBINS_REPO:-https://github.com/cbwinslow/.dotbins}"
+DOTBINS_DIR="${DOTBINS_DIR:-$HOME/.dotbins}"
+SHELL_CONFIG=""
+
+# Detect shell config file
+detect_shell_config() {
+    if [[ -n "${BASH_VERSION:-}" ]]; then
+        if [[ -f "$HOME/.bashrc" ]]; then
+            SHELL_CONFIG="$HOME/.bashrc"
+        elif [[ -f "$HOME/.bash_profile" ]]; then
+            SHELL_CONFIG="$HOME/.bash_profile"
+        fi
+        SHELL_SCRIPT="bash.sh"
+    elif [[ -n "${ZSH_VERSION:-}" ]]; then
+        SHELL_CONFIG="$HOME/.zshrc"
+        SHELL_SCRIPT="zsh.sh"
+    elif [[ -n "${FISH_VERSION:-}" ]]; then
+        SHELL_CONFIG="$HOME/.config/fish/config.fish"
+        SHELL_SCRIPT="fish.fish"
+    else
+        # Default to bash
+        SHELL_CONFIG="$HOME/.bashrc"
+        SHELL_SCRIPT="bash.sh"
+    fi
+}
+
+print_header() {
+    echo -e "\n${BOLD}${BLUE}$1${NC}"
+    echo -e "${BLUE}$(printf '═%.0s' {1..60})${NC}\n"
+}
+
+print_step() {
+    echo -e "${BLUE}→${NC} $1"
+}
+
+print_success() {
+    echo -e "${GREEN}✓${NC} $1"
+}
+
+print_error() {
+    echo -e "${RED}✗${NC} $1"
+}
+
+print_warning() {
+    echo -e "${YELLOW}⚠${NC} $1"
+}
+
+# Check if command exists
+command_exists() {
+    command -v "$1" >/dev/null 2>&1
+}
+
+# Check and install prerequisites
+check_prerequisites() {
+    print_header "Checking Prerequisites"
+    
+    local missing=()
+    
+    # Check Git
+    if command_exists git; then
+        print_success "Git is installed"
+    else
+        missing+=("git")
+        print_error "Git is not installed"
+    fi
+    
+    # Check Git LFS
+    if command_exists git-lfs; then
+        print_success "Git LFS is installed"
+    else
+        missing+=("git-lfs")
+        print_warning "Git LFS is not installed (recommended)"
+    fi
+    
+    # Check Python
+    if command_exists python3; then
+        print_success "Python 3 is installed"
+    elif command_exists python; then
+        print_success "Python is installed"
+    else
+        print_warning "Python is not installed (optional, needed for dotbins tool)"
+    fi
+    
+    if [[ ${#missing[@]} -gt 0 ]]; then
+        print_error "Missing required tools: ${missing[*]}"
+        echo ""
+        echo "Install them with:"
+        echo "  Ubuntu/Debian: sudo apt-get install ${missing[*]}"
+        echo "  macOS: brew install ${missing[*]}"
+        echo "  Fedora/RHEL: sudo dnf install ${missing[*]}"
+        echo ""
+        read -p "Continue anyway? [y/N] " -n 1 -r
+        echo
+        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+            exit 1
+        fi
+    fi
+}
+
+# Clone dotbins repository
+clone_repository() {
+    print_header "Cloning dotbins Repository"
+    
+    if [[ -d "$DOTBINS_DIR" ]]; then
+        print_warning "Directory $DOTBINS_DIR already exists"
+        read -p "Remove and re-clone? [y/N] " -n 1 -r
+        echo
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
+            print_step "Removing existing directory..."
+            rm -rf "$DOTBINS_DIR"
+        else
+            print_step "Keeping existing directory"
+            return 0
+        fi
+    fi
+    
+    print_step "Cloning from $DOTBINS_REPO..."
+    if git clone "$DOTBINS_REPO" "$DOTBINS_DIR"; then
+        print_success "Repository cloned successfully"
+    else
+        print_error "Failed to clone repository"
+        exit 1
+    fi
+}
+
+# Configure Git LFS
+configure_lfs() {
+    print_header "Configuring Git LFS"
+    
+    if ! command_exists git-lfs; then
+        print_warning "Git LFS not installed, skipping LFS configuration"
+        return 0
+    fi
+    
+    print_step "Initializing Git LFS..."
+    git lfs install
+    
+    cd "$DOTBINS_DIR" || exit 1
+    
+    # Run platform-specific LFS configuration
+    if [[ -f "configure-lfs-skip-smudge.py" ]]; then
+        print_step "Configuring platform-specific LFS..."
+        if command_exists python3; then
+            python3 configure-lfs-skip-smudge.py
+        elif command_exists python; then
+            python configure-lfs-skip-smudge.py
+        else
+            print_warning "Python not found, skipping LFS optimization"
+        fi
+    fi
+    
+    print_step "Pulling LFS files for current platform..."
+    git lfs pull
+    
+    print_success "Git LFS configured"
+}
+
+# Configure shell integration
+configure_shell() {
+    print_header "Configuring Shell Integration"
+    
+    detect_shell_config
+    
+    print_step "Detected shell config: $SHELL_CONFIG"
+    print_step "Using shell script: $SHELL_SCRIPT"
+    
+    local source_line="source $DOTBINS_DIR/shell/$SHELL_SCRIPT"
+    
+    # Check if already configured
+    if grep -q "dotbins" "$SHELL_CONFIG" 2>/dev/null; then
+        print_warning "dotbins already configured in $SHELL_CONFIG"
+        read -p "Add anyway? [y/N] " -n 1 -r
+        echo
+        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+            return 0
+        fi
+    fi
+    
+    # Add to shell config
+    print_step "Adding to $SHELL_CONFIG..."
+    {
+        echo ""
+        echo "# dotbins - CLI tool binaries"
+        echo "$source_line"
+    } >> "$SHELL_CONFIG"
+    
+    print_success "Shell integration configured"
+    print_warning "Reload your shell: source $SHELL_CONFIG"
+}
+
+# Install dotbins CLI tool
+install_dotbins_tool() {
+    print_header "Installing dotbins CLI Tool"
+    
+    if command_exists dotbins; then
+        print_success "dotbins tool already installed"
+        return 0
+    fi
+    
+    if ! command_exists pip3 && ! command_exists pip; then
+        print_warning "pip not found, skipping dotbins tool installation"
+        print_warning "Install manually: pip install dotbins"
+        return 0
+    fi
+    
+    print_step "Installing dotbins via pip..."
+    
+    # Try pipx first (better isolation)
+    if command_exists pipx; then
+        print_step "Using pipx for isolated installation..."
+        if pipx install dotbins; then
+            print_success "dotbins installed via pipx"
+            return 0
+        fi
+    fi
+    
+    # Fall back to pip
+    if command_exists pip3; then
+        pip3 install --user dotbins
+    elif command_exists pip; then
+        pip install --user dotbins
+    fi
+    
+    if command_exists dotbins; then
+        print_success "dotbins tool installed"
+    else
+        print_warning "dotbins tool installation may have failed"
+        print_warning "Try manually: pip install --user dotbins"
+    fi
+}
+
+# Sync tools
+sync_tools() {
+    print_header "Syncing Tools"
+    
+    if ! command_exists dotbins; then
+        print_warning "dotbins tool not available, skipping sync"
+        print_warning "Binaries are already present from Git clone"
+        return 0
+    fi
+    
+    print_step "Running dotbins sync --current..."
+    cd "$DOTBINS_DIR" || exit 1
+    
+    if dotbins sync --current; then
+        print_success "Tools synced successfully"
+    else
+        print_warning "Tool sync had issues (but may have partially succeeded)"
+    fi
+}
+
+# Verify installation
+verify_installation() {
+    print_header "Verifying Installation"
+    
+    # Check if verification script exists
+    if [[ -f "$DOTBINS_DIR/scripts/dotbins-verify" ]]; then
+        print_step "Running verification script..."
+        bash "$DOTBINS_DIR/scripts/dotbins-verify" || true
+    else
+        # Manual verification
+        print_step "Checking binary directory..."
+        local os arch
+        os=$(uname -s | tr '[:upper:]' '[:lower:]')
+        [[ "$os" == "darwin" ]] && os="macos"
+        
+        arch=$(uname -m)
+        [[ "$arch" == "x86_64" ]] && arch="amd64"
+        [[ "$arch" == "aarch64" || "$arch" == "arm64" ]] && arch="arm64"
+        
+        local bin_dir="$DOTBINS_DIR/$os/$arch/bin"
+        
+        if [[ -d "$bin_dir" ]]; then
+            local count
+            count=$(find "$bin_dir" -type f -executable 2>/dev/null | wc -l)
+            print_success "Found $count binary files in $bin_dir"
+        else
+            print_error "Binary directory not found: $bin_dir"
+        fi
+    fi
+}
+
+# Print summary
+print_summary() {
+    print_header "Setup Complete!"
+    
+    echo "Next steps:"
+    echo ""
+    echo "1. Reload your shell:"
+    echo "   ${BOLD}source $SHELL_CONFIG${NC}"
+    echo ""
+    echo "2. Verify installation:"
+    echo "   ${BOLD}fzf --version${NC}"
+    echo "   ${BOLD}bat --version${NC}"
+    echo ""
+    echo "3. Update tools:"
+    echo "   ${BOLD}dotbins sync${NC}"
+    echo ""
+    echo "4. Get tool info:"
+    echo "   ${BOLD}$DOTBINS_DIR/scripts/dotbins-info list${NC}"
+    echo ""
+    echo "5. Run health check:"
+    echo "   ${BOLD}$DOTBINS_DIR/scripts/dotbins-verify${NC}"
+    echo ""
+    echo "Documentation:"
+    echo "  $DOTBINS_DIR/docs/USAGE.md"
+    echo "  $DOTBINS_DIR/docs/ASSESSMENT.md"
+    echo ""
+}
+
+# Main setup flow
+main() {
+    echo -e "${BOLD}${BLUE}"
+    cat << "EOF"
+     _       _   _     _           
+  __| | ___ | |_| |__ (_)_ __  ___ 
+ / _` |/ _ \| __| '_ \| | '_ \/ __|
+| (_| | (_) | |_| |_) | | | | \__ \
+ \__,_|\___/ \__|_.__/|_|_| |_|___/
+                                   
+Automated Setup Script
+EOF
+    echo -e "${NC}"
+    
+    echo "This script will set up dotbins on your machine."
+    echo "Repository: $DOTBINS_REPO"
+    echo "Install location: $DOTBINS_DIR"
+    echo ""
+    read -p "Continue? [Y/n] " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Nn]$ ]]; then
+        echo "Setup cancelled."
+        exit 0
+    fi
+    
+    check_prerequisites
+    clone_repository
+    configure_lfs
+    configure_shell
+    install_dotbins_tool
+    sync_tools
+    verify_installation
+    print_summary
+    
+    echo -e "${GREEN}${BOLD}✓ Setup completed successfully!${NC}"
+}
+
+# Handle errors
+trap 'echo -e "\n${RED}Error occurred during setup${NC}"; exit 1' ERR
+
+# Run main function
+main "$@"
