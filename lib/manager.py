@@ -139,7 +139,7 @@ class ToolManager:
         """
         # Detect platform if not specified
         if not platform or not arch:
-            platform, arch = self.downloader._detect_platform()
+            platform, arch = self.downloader.detect_platform()
         
         # Check if version pinning requested
         if version:
@@ -163,7 +163,7 @@ class ToolManager:
             True if successful
         """
         if not platform or not arch:
-            platform, arch = self.downloader._detect_platform()
+            platform, arch = self.downloader.detect_platform()
         
         # Remove binary
         bin_path = self.dotbins_dir / platform / arch / 'bin' / tool_name
@@ -240,7 +240,7 @@ class ToolManager:
         Returns:
             Dictionary mapping tool names to verification status
         """
-        platform, arch = self.downloader._detect_platform()
+        platform, arch = self.downloader.detect_platform()
         bin_dir = self.dotbins_dir / platform / arch / 'bin'
         
         if not bin_dir.exists():
@@ -373,7 +373,7 @@ class ToolManager:
         installed = self.list_installed()
         
         # Get current platform
-        platform, arch = self.downloader._detect_platform()
+        platform, arch = self.downloader.detect_platform()
         
         profile = {
             'platform': platform,
@@ -414,7 +414,7 @@ class ToolManager:
         print(f"  Tools: {len(profile.get('tools', []))}")
         
         # Get current platform
-        platform, arch = self.downloader._detect_platform()
+        platform, arch = self.downloader.detect_platform()
         
         # Warn if platforms don't match
         if profile.get('platform') != platform or profile.get('arch') != arch:

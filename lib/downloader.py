@@ -29,8 +29,10 @@ import tempfile
 import urllib.request
 import urllib.error
 import zipfile
+from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
+import platform as platform_module
 
 
 class BinaryDownloader:
@@ -333,7 +335,7 @@ class BinaryDownloader:
         
         # Detect current platform if needed
         if current_platform_only:
-            platform, arch = self._detect_platform()
+            platform, arch = self.detect_platform()
             print(f"Syncing for current platform: {platform}/{arch}")
         
         for key in manifest:
@@ -345,7 +347,7 @@ class BinaryDownloader:
             
             # Skip if not current platform
             if current_platform_only:
-                curr_platform, curr_arch = self._detect_platform()
+                curr_platform, curr_arch = self.detect_platform()
                 if platform != curr_platform or arch != curr_arch:
                     continue
             
@@ -354,15 +356,18 @@ class BinaryDownloader:
         
         return results
     
-    def _detect_platform(self) -> Tuple[str, str]:
-        """Detect current platform and architecture."""
-        import platform
+    def detect_platform(self) -> Tuple[str, str]:
+        """
+        Detect current platform and architecture.
         
-        os_name = platform.system().lower()
+        Returns:
+            Tuple of (platform, architecture) e.g., ('linux', 'amd64')
+        """
+        os_name = platform_module.system().lower()
         if os_name == 'darwin':
             os_name = 'macos'
         
-        machine = platform.machine().lower()
+        machine = platform_module.machine().lower()
         if machine == 'x86_64':
             arch = 'amd64'
         elif machine in ['aarch64', 'arm64']:
@@ -374,7 +379,6 @@ class BinaryDownloader:
     
     def _current_timestamp(self) -> str:
         """Get current timestamp in ISO format."""
-        from datetime import datetime
         return datetime.utcnow().isoformat() + 'Z'
     
     def clean_cache(self, keep_current: bool = True):

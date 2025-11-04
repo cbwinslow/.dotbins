@@ -14,10 +14,12 @@ Usage:
     scanner.scan_tool('fzf', '0.66.1')
 """
 
+import hashlib
 import json
 import subprocess
 import urllib.request
 import urllib.error
+from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
@@ -105,7 +107,6 @@ class SecurityScanner:
         
         # Verify SHA256 if provided
         if expected_sha256:
-            import hashlib
             sha256 = hashlib.sha256()
             with open(binary_path, 'rb') as f:
                 while chunk := f.read(8192):
@@ -202,7 +203,6 @@ class SecurityScanner:
     
     def _current_timestamp(self) -> str:
         """Get current timestamp in ISO format."""
-        from datetime import datetime
         return datetime.utcnow().isoformat() + 'Z'
 
 
