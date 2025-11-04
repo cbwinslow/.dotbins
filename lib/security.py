@@ -31,19 +31,31 @@ class SecurityScanner:
         """Initialize the security scanner."""
         self.github_advisory_api = "https://api.github.com/advisories"
     
-    def check_cve(self, package_name: str, version: str, ecosystem: str = "github-actions") -> List[Dict]:
+    def check_cve(self, package_name: str, version: str, ecosystem: str = None) -> List[Dict]:
         """
         Check for CVEs affecting a package version.
+        
+        Note: This is a basic implementation. For CLI tools, CVE checking is complex
+        as they're typically not in standard package ecosystems. This function
+        provides best-effort checking and may produce false positives.
         
         Args:
             package_name: Name of the package
             version: Version to check
-            ecosystem: Package ecosystem (e.g., 'npm', 'pip', 'github-actions')
+            ecosystem: Package ecosystem (optional, tries to detect)
+                      Common values: 'npm', 'pip', 'rubygems', 'go', 'maven'
             
         Returns:
             List of CVE information dictionaries
         """
         print(f"Checking for CVEs: {package_name} {version}")
+        print("Note: CVE checking for CLI tools is experimental and may produce false positives")
+        
+        # For CLI tools, we typically don't have a standard ecosystem
+        # This is a limitation - most CLI tools aren't tracked in package advisory databases
+        if not ecosystem:
+            print("Warning: No ecosystem specified. Results may be limited.")
+            return []
         
         # Note: GitHub Advisory Database API has rate limits
         # For production use, implement caching and rate limiting
@@ -57,17 +69,24 @@ class SecurityScanner:
             with urllib.request.urlopen(req, timeout=10) as response:
                 data = json.loads(response.read().decode())
                 
-                # Filter for our package (simplified)
-                # In practice, would need more sophisticated matching
+                # Filter for our package
+                # This is simplified - real implementation would need:
+                # 1. Exact package name matching
+                # 2. Version range comparison
+                # 3. Better false positive filtering
                 relevant_cves = []
                 for advisory in data:
-                    if package_name.lower() in advisory.get('summary', '').lower():
-                        relevant_cves.append({
-                            'id': advisory.get('ghsa_id'),
-                            'severity': advisory.get('severity'),
-                            'summary': advisory.get('summary'),
-                            'url': advisory.get('html_url')
-                        })
+                    # Check if package name appears in affected packages
+                    affected = advisory.get('affected', [])
+                    for pkg in affected:
+                        if pkg.get('package', {}).get('name', '').lower() == package_name.lower():
+                            relevant_cves.append({
+                                'id': advisory.get('ghsa_id'),
+                                'severity': advisory.get('severity'),
+                                'summary': advisory.get('summary'),
+                                'url': advisory.get('html_url')
+                            })
+                            break
                 
                 return relevant_cves
                 

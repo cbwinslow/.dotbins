@@ -17,8 +17,10 @@ Usage:
     dotbins-manager export profile.json  # Export profile
 """
 
-import sys
+import argparse
 import os
+import sys
+import traceback
 from pathlib import Path
 
 # Add lib directory to path
@@ -293,8 +295,6 @@ def cmd_status(args):
 
 def main():
     """Main entry point."""
-    import argparse
-    
     parser = argparse.ArgumentParser(
         description='dotbins Manager - Full-featured CLI tool management',
         epilog='For more help on a command: dotbins-manager <command> --help'
@@ -420,7 +420,6 @@ def main():
         except Exception as e:
             print(f"\nError: {e}")
             if os.getenv('DEBUG'):
-                import traceback
                 traceback.print_exc()
             return 1
     else:

@@ -424,7 +424,7 @@ def main():
     
     if args.command == 'sync':
         if args.tool:
-            platform, arch = downloader._detect_platform()
+            platform, arch = downloader.detect_platform()
             success = downloader.sync_tool(args.tool, platform, arch, args.force)
             sys.exit(0 if success else 1)
         else:
