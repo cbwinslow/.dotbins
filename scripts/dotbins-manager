@@ -1,0 +1,431 @@
+#!/usr/bin/env python3
+"""
+dotbins-manager - Unified CLI for dotbins management
+
+A comprehensive tool management system for dotbins with:
+- URL-based downloads (no Git LFS costs)
+- Version pinning and rollback
+- Security scanning
+- Profile export/import
+- Verification and validation
+
+Usage:
+    dotbins-manager sync              # Sync all tools
+    dotbins-manager install fzf       # Install a tool
+    dotbins-manager list              # List installed tools
+    dotbins-manager verify            # Verify installation
+    dotbins-manager export profile.json  # Export profile
+"""
+
+import argparse
+import os
+import sys
+import traceback
+from pathlib import Path
+
+# Add lib directory to path
+lib_dir = Path(__file__).parent.parent / 'lib'
+sys.path.insert(0, str(lib_dir))
+
+try:
+    from manager import ToolManager
+    from downloader import BinaryDownloader
+    from security import SecurityScanner
+except ImportError as e:
+    print(f"Error: Failed to import required modules: {e}")
+    print(f"Make sure the lib directory is properly set up")
+    sys.exit(1)
+
+
+def print_banner():
+    """Print application banner."""
+    print("""
+╔══════════════════════════════════════════════════════════╗
+║              dotbins Manager v1.0                        ║
+║        Full-Featured CLI Tool Management System          ║
+╚══════════════════════════════════════════════════════════╝
+""")
+
+
+def cmd_sync(args):
+    """Sync tools from manifest."""
+    downloader = BinaryDownloader()
+    
+    if args.tool:
+        # Sync specific tool
+        platform, arch = downloader.detect_platform()
+        success = downloader.sync_tool(args.tool, platform, arch, args.force)
+        return 0 if success else 1
+    else:
+        # Sync all tools
+        results = downloader.sync_all(args.current, args.force)
+        failures = [k for k, v in results.items() if not v]
+        
+        if failures:
+            print(f"\n✗ Failed: {', '.join(failures)}")
+            return 1
+        else:
+            print("\n✓ All tools synced successfully")
+            return 0
+
+
+def cmd_list(args):
+    """List installed or available tools."""
+    manager = ToolManager()
+    
+    if args.available:
+        tools = manager.list_available()
+        print(f"\nAvailable tools ({len(tools)}):")
+        for tool in tools:
+            status = "✓" if tool['installed'] else " "
+            platforms = ", ".join(tool['platforms'])
+            print(f"  [{status}] {tool['name']:<20} {platforms}")
+    else:
+        tools = manager.list_installed()
+        if not tools:
+            print("\nNo tools installed")
+            print("Run 'dotbins-manager sync' to install tools")
+        else:
+            print(f"\nInstalled tools ({len(tools)}):")
+            for tool in tools:
+                pinned = " 📌" if tool['pinned'] else ""
+                print(f"  {tool['name']:<20} {tool['version']:<15} {tool['platform']}/{tool['arch']}{pinned}")
+    
+    return 0
+
+
+def cmd_install(args):
+    """Install a tool."""
+    manager = ToolManager()
+    success = manager.install_tool(args.tool, args.version, force=args.force)
+    return 0 if success else 1
+
+
+def cmd_uninstall(args):
+    """Uninstall a tool."""
+    manager = ToolManager()
+    
+    # Confirm
+    if not args.yes:
+        response = input(f"Uninstall {args.tool}? (y/N): ")
+        if response.lower() != 'y':
+            print("Cancelled")
+            return 0
+    
+    manager.uninstall_tool(args.tool)
+    return 0
+
+
+def cmd_pin(args):
+    """Pin tool version."""
+    manager = ToolManager()
+    manager.pin_version(args.tool, args.version)
+    return 0
+
+
+def cmd_unpin(args):
+    """Unpin tool version."""
+    manager = ToolManager()
+    manager.unpin_version(args.tool)
+    return 0
+
+
+def cmd_verify(args):
+    """Verify installation."""
+    manager = ToolManager()
+    
+    print("\n=== Verifying Installation ===\n")
+    results = manager.verify_installation(args.tool)
+    
+    if not results:
+        print("No tools to verify")
+        return 1
+    
+    failures = [k for k, v in results.items() if not v]
+    
+    print(f"\n{'='*60}")
+    print(f"Total: {len(results)} tools")
+    print(f"Passed: {len(results) - len(failures)}")
+    print(f"Failed: {len(failures)}")
+    print(f"{'='*60}")
+    
+    return 0 if not failures else 1
+
+
+def cmd_validate(args):
+    """Validate configuration."""
+    manager = ToolManager()
+    
+    print("\n=== Validating Configuration ===\n")
+    valid, issues = manager.validate_config()
+    
+    if valid:
+        print("✓ Configuration is valid")
+        return 0
+    else:
+        print("✗ Configuration has issues:\n")
+        for issue in issues:
+            print(f"  - {issue}")
+        return 1
+
+
+def cmd_export(args):
+    """Export profile."""
+    manager = ToolManager()
+    manager.export_profile(args.file)
+    return 0
+
+
+def cmd_import(args):
+    """Import profile."""
+    manager = ToolManager()
+    manager.import_profile(args.file, args.force)
+    return 0
+
+
+def cmd_backup(args):
+    """Create backup."""
+    manager = ToolManager()
+    manager.create_backup()
+    return 0
+
+
+def cmd_restore(args):
+    """Restore backup."""
+    manager = ToolManager()
+    
+    # Confirm
+    if not args.yes:
+        response = input(f"Restore from {args.file}? (y/N): ")
+        if response.lower() != 'y':
+            print("Cancelled")
+            return 0
+    
+    manager.restore_backup(args.file)
+    return 0
+
+
+def cmd_clean(args):
+    """Clean cache."""
+    downloader = BinaryDownloader()
+    
+    print("\n=== Cleaning Cache ===\n")
+    downloader.clean_cache(keep_current=not args.all)
+    print("\n✓ Cache cleaned")
+    return 0
+
+
+def cmd_security(args):
+    """Run security checks."""
+    scanner = SecurityScanner()
+    
+    if args.subcommand == 'verify':
+        if not args.path:
+            print("Error: --path required")
+            return 1
+        
+        valid, message = scanner.verify_binary(Path(args.path), args.sha256)
+        
+        if valid:
+            print(f"✓ {message}")
+            return 0
+        else:
+            print(f"✗ {message}")
+            return 1
+    
+    elif args.subcommand == 'check-cve':
+        if not args.tool or not args.version:
+            print("Error: --tool and --version required")
+            return 1
+        
+        cves = scanner.check_cve(args.tool, args.version)
+        
+        if cves:
+            print(f"\n⚠️  Found {len(cves)} potential CVEs:")
+            for cve in cves:
+                print(f"\n  {cve['id']} - {cve['severity']}")
+                print(f"  {cve['summary']}")
+                print(f"  {cve['url']}")
+            return 1
+        else:
+            print("\n✓ No known CVEs found")
+            return 0
+    
+    return 0
+
+
+def cmd_status(args):
+    """Show system status."""
+    manager = ToolManager()
+    downloader = BinaryDownloader()
+    
+    print("\n=== dotbins Status ===\n")
+    
+    # Platform info
+    platform, arch = downloader.detect_platform()
+    print(f"Platform: {platform}/{arch}")
+    
+    # Directories
+    dotbins_dir = Path(os.path.expanduser('~/.dotbins'))
+    cache_dir = Path(os.path.expanduser('~/.cache/dotbins'))
+    
+    print(f"dotbins directory: {dotbins_dir}")
+    print(f"Cache directory: {cache_dir}")
+    
+    # Installed tools
+    tools = manager.list_installed()
+    current_tools = [t for t in tools if t['platform'] == platform and t['arch'] == arch]
+    print(f"\nInstalled tools: {len(current_tools)} (current platform)")
+    print(f"Total installations: {len(tools)} (all platforms)")
+    
+    # Pinned tools
+    pinned = [t for t in tools if t['pinned']]
+    if pinned:
+        print(f"Pinned versions: {len(pinned)}")
+    
+    # Cache size
+    if cache_dir.exists():
+        cache_size = sum(f.stat().st_size for f in cache_dir.rglob('*') if f.is_file())
+        cache_size_mb = cache_size / (1024 * 1024)
+        print(f"\nCache size: {cache_size_mb:.2f} MB")
+    
+    print()
+    return 0
+
+
+def main():
+    """Main entry point."""
+    parser = argparse.ArgumentParser(
+        description='dotbins Manager - Full-featured CLI tool management',
+        epilog='For more help on a command: dotbins-manager <command> --help'
+    )
+    
+    parser.add_argument('--no-banner', action='store_true',
+                        help='Suppress banner output')
+    
+    subparsers = parser.add_subparsers(dest='command', help='Command to execute')
+    
+    # Sync command
+    sync_parser = subparsers.add_parser('sync', help='Sync tools from manifest')
+    sync_parser.add_argument('tool', nargs='?', help='Specific tool to sync')
+    sync_parser.add_argument('--current', action='store_true',
+                             help='Only sync current platform')
+    sync_parser.add_argument('--force', action='store_true',
+                             help='Force re-download')
+    
+    # List command
+    list_parser = subparsers.add_parser('list', help='List tools')
+    list_parser.add_argument('--available', action='store_true',
+                             help='List available tools instead of installed')
+    
+    # Install command
+    install_parser = subparsers.add_parser('install', help='Install a tool')
+    install_parser.add_argument('tool', help='Tool name')
+    install_parser.add_argument('--version', help='Specific version')
+    install_parser.add_argument('--force', action='store_true', help='Force reinstall')
+    
+    # Uninstall command
+    uninstall_parser = subparsers.add_parser('uninstall', help='Uninstall a tool')
+    uninstall_parser.add_argument('tool', help='Tool name')
+    uninstall_parser.add_argument('--yes', action='store_true', help='Skip confirmation')
+    
+    # Pin commands
+    pin_parser = subparsers.add_parser('pin', help='Pin tool version')
+    pin_parser.add_argument('tool', help='Tool name')
+    pin_parser.add_argument('version', help='Version to pin')
+    
+    unpin_parser = subparsers.add_parser('unpin', help='Unpin tool version')
+    unpin_parser.add_argument('tool', help='Tool name')
+    
+    # Verify command
+    verify_parser = subparsers.add_parser('verify', help='Verify installation')
+    verify_parser.add_argument('tool', nargs='?', help='Specific tool to verify')
+    
+    # Validate command
+    subparsers.add_parser('validate', help='Validate configuration')
+    
+    # Export/Import commands
+    export_parser = subparsers.add_parser('export', help='Export profile')
+    export_parser.add_argument('file', help='Output file')
+    
+    import_parser = subparsers.add_parser('import', help='Import profile')
+    import_parser.add_argument('file', help='Input file')
+    import_parser.add_argument('--force', action='store_true', help='Force reinstall')
+    
+    # Backup/Restore commands
+    subparsers.add_parser('backup', help='Create backup')
+    
+    restore_parser = subparsers.add_parser('restore', help='Restore backup')
+    restore_parser.add_argument('file', help='Backup file')
+    restore_parser.add_argument('--yes', action='store_true', help='Skip confirmation')
+    
+    # Clean command
+    clean_parser = subparsers.add_parser('clean', help='Clean cache')
+    clean_parser.add_argument('--all', action='store_true',
+                              help='Remove all cached files (including current)')
+    
+    # Security command
+    security_parser = subparsers.add_parser('security', help='Security checks')
+    security_subparsers = security_parser.add_subparsers(dest='subcommand')
+    
+    security_verify = security_subparsers.add_parser('verify', help='Verify binary')
+    security_verify.add_argument('--path', required=True, help='Path to binary')
+    security_verify.add_argument('--sha256', help='Expected SHA256')
+    
+    security_cve = security_subparsers.add_parser('check-cve', help='Check for CVEs')
+    security_cve.add_argument('--tool', required=True, help='Tool name')
+    security_cve.add_argument('--version', required=True, help='Tool version')
+    
+    # Status command
+    subparsers.add_parser('status', help='Show status')
+    
+    args = parser.parse_args()
+    
+    if not args.command:
+        if not args.no_banner:
+            print_banner()
+        parser.print_help()
+        return 0
+    
+    # Print banner unless suppressed
+    if not args.no_banner and args.command not in ['list', 'status']:
+        print_banner()
+    
+    # Route to command handler
+    command_map = {
+        'sync': cmd_sync,
+        'list': cmd_list,
+        'install': cmd_install,
+        'uninstall': cmd_uninstall,
+        'pin': cmd_pin,
+        'unpin': cmd_unpin,
+        'verify': cmd_verify,
+        'validate': cmd_validate,
+        'export': cmd_export,
+        'import': cmd_import,
+        'backup': cmd_backup,
+        'restore': cmd_restore,
+        'clean': cmd_clean,
+        'security': cmd_security,
+        'status': cmd_status,
+    }
+    
+    handler = command_map.get(args.command)
+    if handler:
+        try:
+            return handler(args)
+        except KeyboardInterrupt:
+            print("\n\nInterrupted by user")
+            return 130
+        except Exception as e:
+            print(f"\nError: {e}")
+            if os.getenv('DEBUG'):
+                traceback.print_exc()
+            return 1
+    else:
+        print(f"Unknown command: {args.command}")
+        return 1
+
+
+if __name__ == '__main__':
+    sys.exit(main())

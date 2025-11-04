@@ -4,16 +4,27 @@
 
 This directory contains command-line tools automatically managed by [dotbins](https://github.com/basnijholt/dotbins).
 
-## 📚 **NEW:** Enhanced Documentation & Tools
+## 📚 **NEW:** Full-Featured Management System
 
-This repository now includes comprehensive documentation and AI-powered helper tools:
+This repository now includes a **complete dotbins management system** with:
+
+### 🎯 dotbins-manager (NEW)
+- **[🚀 Full Feature Manager](docs/MANAGER.md)** - Comprehensive tool management CLI
+- **URL-based downloads** (zero Git LFS costs)
+- **Version pinning** and rollback
+- **Security scanning** (CVE checks, binary verification)
+- **Profile export/import** (sync across machines)
+- **Backup/restore** functionality
+- All-in-one unified interface
 
 ### Documentation
 - **[📖 Usage Guide](docs/USAGE.md)** - Complete walkthrough with examples, troubleshooting, and how-to guides
 - **[🏗️ Architecture Guide](docs/ARCHITECTURE.md)** - Technical deep-dive into how dotbins works
 - **[📊 Assessment & Analysis](docs/ASSESSMENT.md)** - Repository evaluation, pros/cons, and recommendations
+- **[⚙️ Manager Guide](docs/MANAGER.md)** - Full-featured management system documentation
 
 ### Helper Scripts
+- **[🎯 dotbins-manager](scripts/dotbins-manager)** - Full-featured management CLI (NEW)
 - **[🔍 dotbins-verify](scripts/dotbins-verify)** - Health check and installation verification
 - **[📝 dotbins-info](scripts/dotbins-info)** - Tool information, search, and discovery
 - **[⚙️ dotbins-setup](scripts/dotbins-setup)** - Automated setup for new machines
@@ -33,14 +44,25 @@ This repository now includes comprehensive documentation and AI-powered helper t
 curl -fsSL https://raw.githubusercontent.com/cbwinslow/.dotbins/main/scripts/dotbins-setup | bash
 ```
 
-**Verify installation:**
+**Use the full-featured manager:**
 ```bash
-~/.dotbins/scripts/dotbins-verify
+# List installed tools
+~/.dotbins/scripts/dotbins-manager list
+
+# Sync tools (downloads from URLs, no Git LFS costs)
+~/.dotbins/scripts/dotbins-manager sync --current
+
+# Verify installation
+~/.dotbins/scripts/dotbins-manager verify
+
+# See full documentation
+cat ~/.dotbins/docs/MANAGER.md
 ```
 
-**Explore tools:**
+**Or use individual helper scripts:**
 ```bash
-~/.dotbins/scripts/dotbins-info list
+~/.dotbins/scripts/dotbins-verify    # Health check
+~/.dotbins/scripts/dotbins-info list # Tool information
 ```
 
 ---
