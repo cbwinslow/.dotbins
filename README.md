@@ -4,6 +4,47 @@
 
 This directory contains command-line tools automatically managed by [dotbins](https://github.com/basnijholt/dotbins).
 
+## 📚 **NEW:** Enhanced Documentation & Tools
+
+This repository now includes comprehensive documentation and AI-powered helper tools:
+
+### Documentation
+- **[📖 Usage Guide](docs/USAGE.md)** - Complete walkthrough with examples, troubleshooting, and how-to guides
+- **[🏗️ Architecture Guide](docs/ARCHITECTURE.md)** - Technical deep-dive into how dotbins works
+- **[📊 Assessment & Analysis](docs/ASSESSMENT.md)** - Repository evaluation, pros/cons, and recommendations
+
+### Helper Scripts
+- **[🔍 dotbins-verify](scripts/dotbins-verify)** - Health check and installation verification
+- **[📝 dotbins-info](scripts/dotbins-info)** - Tool information, search, and discovery
+- **[⚙️ dotbins-setup](scripts/dotbins-setup)** - Automated setup for new machines
+- **[🤖 ai-metadata.py](scripts/ai-metadata.py)** - AI-powered metadata generator
+- **[📋 Scripts README](scripts/README.md)** - Complete scripts documentation
+
+### AI Integration
+- **[🚀 OpenRouter SDK](lib/openrouter/README.md)** - Standalone Python SDK for AI-powered features
+- Free models support (Gemini, LLaMA, Qwen)
+- Web search integration for current information
+- Can be extracted as separate repository
+
+### Quick Start
+
+**New machine setup:**
+```bash
+curl -fsSL https://raw.githubusercontent.com/cbwinslow/.dotbins/main/scripts/dotbins-setup | bash
+```
+
+**Verify installation:**
+```bash
+~/.dotbins/scripts/dotbins-verify
+```
+
+**Explore tools:**
+```bash
+~/.dotbins/scripts/dotbins-info list
+```
+
+---
+
 ## 📋 Table of Contents
 
 - [What is dotbins?](#-what-is-dotbins)
