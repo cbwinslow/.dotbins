@@ -9,6 +9,12 @@ _arch=$(uname -m)
 
 export PATH="$HOME/.dotbins/$_os/$_arch/bin:$PATH"
 
+helpers_file="$HOME/.dotbins/shell/helpers.sh"
+if [[ -f "$helpers_file" ]]; then
+    # shellcheck disable=SC1090
+    source "$helpers_file"
+fi
+
 # Tool-specific configurations
 # Configuration for bat
 if command -v bat >/dev/null 2>&1; then
