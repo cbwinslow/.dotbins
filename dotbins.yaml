@@ -73,3 +73,23 @@ tools:
     repo: astral-sh/uv
     binary_name: [uv, uvx]
     path_in_archive: [uv-*/uv, uv-*/uvx]
+
+  gh:
+    repo: cli/cli
+    path_in_archive: gh-*/bin/gh
+
+  trivy:
+    repo: aquasecurity/trivy
+    path_in_archive: trivy
+
+  k9s:
+    repo: derailed/k9s
+    path_in_archive: k9s
+
+  flux:
+    repo: fluxcd/flux2
+    path_in_archive: flux
+
+  doctl:
+    repo: digitalocean/doctl
+    path_in_archive: doctl

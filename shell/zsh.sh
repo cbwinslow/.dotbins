@@ -20,6 +20,12 @@ _arch=$(uname -m)
 # This ensures dotbins tools take precedence over system tools
 export PATH="$HOME/.dotbins/$_os/$_arch/bin:$PATH"
 
+helpers_file="$HOME/.dotbins/shell/helpers.sh"
+if [[ -f "$helpers_file" ]]; then
+    # shellcheck disable=SC1090
+    source "$helpers_file"
+fi
+
 # Tool-specific configurations
 # These configurations are automatically generated from dotbins.yaml
 # Each section checks if the tool is available before configuring it
